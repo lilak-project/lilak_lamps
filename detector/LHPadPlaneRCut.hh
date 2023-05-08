@@ -1,14 +1,14 @@
-#ifndef LAMPSPADPLANERPAD_HH
-#define LAMPSPADPLANERPAD_HH
+#ifndef LAMPSPADPLANERCUT_HH
+#define LAMPSPADPLANERCUT_HH
 
 #include "LKPadPlane.hpp"
 #include "TF1.h"
 
-class LHPadPlaneRPad : public LKPadPlane
+class LHPadPlaneRCut : public LKPadPlane
 {
   public:
-    LHPadPlaneRPad();
-    virtual ~LHPadPlaneRPad() {}
+    LHPadPlaneRCut();
+    virtual ~LHPadPlaneRCut() {}
 
     virtual bool Init();
 
@@ -76,7 +76,7 @@ class LHPadPlaneRPad : public LKPadPlane
     Double_t GetYSpacing()        const { return fYSpacing; }
       Bool_t GetRemoveCuttedPad() const { return fRemoveCuttedPad; }
 
-  ClassDef(LHPadPlaneRPad, 1)
+  ClassDef(LHPadPlaneRCut, 1)
 };
 
 #endif

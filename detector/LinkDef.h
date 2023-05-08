@@ -5,6 +5,8 @@
 #pragma link off all functions;
 
 #pragma link C++ class LHTpc+;
-#pragma link C++ class LHPadPlaneRPad+;
+#pragma link C++ class LHPadPlaneRCut+;
+#pragma link C++ class LHPadPlaneYCut+;
+#pragma link C++ class LHPadPlaneFan+;
 
 #endif

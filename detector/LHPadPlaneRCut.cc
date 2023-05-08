@@ -1,5 +1,5 @@
 #include "LKLogger.hpp"
-#include "LHPadPlaneRPad.hh"
+#include "LHPadPlaneRCut.hh"
 
 #include "TGraph.h"
 #include "TMath.h"
@@ -13,29 +13,29 @@
 #include <iostream>
 using namespace std;
 
-ClassImp(LHPadPlaneRPad)
+ClassImp(LHPadPlaneRCut)
 
-LHPadPlaneRPad::LHPadPlaneRPad()
+LHPadPlaneRCut::LHPadPlaneRCut()
 :LKPadPlane("PadPlaneR", "pad plane with rectangular pads for LAMPS-TPC")
 {
 }
 
-bool LHPadPlaneRPad::Init()
+bool LHPadPlaneRCut::Init()
 {
-  fRMin = fPar -> GetParDouble("rMinTPC");
-  fRMax = fPar -> GetParDouble("rMaxTPC");
-  fPadGap = fPar -> GetParDouble("PadGap");
-  fPadWid = fPar -> GetParDouble("PadWidth");
-  fPadHei = fPar -> GetParDouble("PadHeight");
-  fYPPMin = fPar -> GetParDouble("YPPMin");
+  fRMin = fPar -> GetParDouble("LHPadPlaneRcut/rMinTPC");
+  fRMax = fPar -> GetParDouble("LHPadPlaneRcut/rMaxTPC");
+  fPadGap = fPar -> GetParDouble("LHPadPlaneRcut/PadGap");
+  fPadWid = fPar -> GetParDouble("LHPadPlaneRcut/PadWidth");
+  fPadHei = fPar -> GetParDouble("LHPadPlaneRcut/PadHeight");
+  fYPPMin = fPar -> GetParDouble("LHPadPlaneRcut/YPPMin");
   if (fYPPMin+.5*fPadHei > fRMin) {
     lk_error << "'YPPMin' + 'fPadHei'/2 should be larger than 'rMinTPC'!  :  " << fYPPMin+.5*fPadHei << " < " << fRMin << endl;
     return false;
   }
-  fYPPMax = fPar -> GetParDouble("YPPMax");
-  fWPPBot = fPar -> GetParDouble("WPPBottom");
-  fPadAreaLL = fPar -> GetParDouble("PadAreaLL");
-  fRemoveCuttedPad = fPar -> GetParBool("removeCuttedPad");
+  fYPPMax = fPar -> GetParDouble("LHPadPlaneRcut/YPPMax");
+  fWPPBot = fPar -> GetParDouble("LHPadPlaneRcut/WPPBottom");
+  fPadAreaLL = fPar -> GetParDouble("LHPadPlaneRcut/PadAreaLL");
+  fRemoveCuttedPad = fPar -> GetParBool("LHPadPlaneRcut/rmCuttedPad");
 
   fTanPi1o8 = TMath::Tan(TMath::Pi()*1./8.);
   fTanPi3o8 = TMath::Tan(TMath::Pi()*3./8.);
@@ -343,7 +343,7 @@ bool LHPadPlaneRPad::Init()
   return true;
 }
 
-Int_t LHPadPlaneRPad::FindPadID(Int_t section, Int_t row, Int_t layer)
+Int_t LHPadPlaneRCut::FindPadID(Int_t section, Int_t row, Int_t layer)
 {
   if (layer < 0 || layer >= fLayerMax)
     return -1;
@@ -361,7 +361,7 @@ Int_t LHPadPlaneRPad::FindPadID(Int_t section, Int_t row, Int_t layer)
   return id;
 }
 
-Int_t LHPadPlaneRPad::FindPadID(Double_t i, Double_t j)
+Int_t LHPadPlaneRCut::FindPadID(Double_t i, Double_t j)
 {
   Int_t section = FindSection(i,j);
 
@@ -403,12 +403,12 @@ Int_t LHPadPlaneRPad::FindPadID(Double_t i, Double_t j)
   return id;
 }
 
-Double_t LHPadPlaneRPad::PadDisplacement() const
+Double_t LHPadPlaneRCut::PadDisplacement() const
 {
   return sqrt(fXSpacing*fXSpacing + fYSpacing*fYSpacing);
 }
 
-bool LHPadPlaneRPad::IsInBoundary(Double_t i, Double_t j)
+bool LHPadPlaneRCut::IsInBoundary(Double_t i, Double_t j)
 {
   Double_t r = TMath::Sqrt(i*i+j*j);
   if (r < fRMin || r > fRMax)
@@ -417,7 +417,7 @@ bool LHPadPlaneRPad::IsInBoundary(Double_t i, Double_t j)
   return true;
 }
 
-TH2* LHPadPlaneRPad::GetHist(Option_t *option)
+TH2* LHPadPlaneRCut::GetHist(Option_t *option)
 {
   if (fH2Plane != nullptr)
     return fH2Plane; 
@@ -476,7 +476,7 @@ TH2* LHPadPlaneRPad::GetHist(Option_t *option)
   return fH2Plane;
 }
 
-void LHPadPlaneRPad::DrawFrame(Option_t *)
+void LHPadPlaneRCut::DrawFrame(Option_t *)
 {
   Color_t lineColor = kGray;
 
@@ -534,7 +534,7 @@ void LHPadPlaneRPad::DrawFrame(Option_t *)
   line8 -> Draw("samel");
 }
 
-TCanvas *LHPadPlaneRPad::GetCanvas(Option_t *)
+TCanvas *LHPadPlaneRCut::GetCanvas(Option_t *)
 {
   if (fCanvas == nullptr)
     fCanvas = new TCanvas(fName+Form("%d",fPlaneID),fName,890,750);
@@ -543,7 +543,7 @@ TCanvas *LHPadPlaneRPad::GetCanvas(Option_t *)
   return fCanvas;
 }
 
-LKPad *LHPadPlaneRPad::NewPad(Int_t s, Int_t r, Int_t l)
+LKPad *LHPadPlaneRCut::NewPad(Int_t s, Int_t r, Int_t l)
 {
   auto pad = new LKPad();
   pad -> SetSectionRowLayer(s, r, l);
@@ -551,13 +551,13 @@ LKPad *LHPadPlaneRPad::NewPad(Int_t s, Int_t r, Int_t l)
   return pad;
 }
 
-void LHPadPlaneRPad::SetNeighborPads(LKPad *pad0, LKPad *pad1)
+void LHPadPlaneRCut::SetNeighborPads(LKPad *pad0, LKPad *pad1)
 {
   pad0 -> AddNeighborPad(pad1);
   pad1 -> AddNeighborPad(pad0);
 }
 
-Int_t LHPadPlaneRPad::FindSection(Double_t i, Double_t j)
+Int_t LHPadPlaneRCut::FindSection(Double_t i, Double_t j)
 {
   if (j > fTanPi3o8*i) {
     if (j > fTanPi1o8*i) {

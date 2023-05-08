@@ -1,5 +1,7 @@
 #include "LHTpc.hh"
-#include "LHPadPlaneRPad.hh"
+#include "LHPadPlaneRCut.hh"
+#include "LHPadPlaneYCut.hh"
+#include "LHPadPlaneFan.hh"
 
 ClassImp(LHTpc)
 
@@ -47,18 +49,19 @@ bool LHTpc::BuildGeometry()
     fGeoManager -> SetNameTitle("LAMPS TPC", "LAMPS TPC Geometry");
   }
 
-  auto rMinTPC = fPar -> GetParDouble("rMinTPC");
-  auto rMaxTPC = fPar -> GetParDouble("rMaxTPC");
-  auto tpcLength = fPar -> GetParDouble("tpcLength");
-  auto zOffset = fPar -> GetParDouble("zOffset");
-  TGeoMedium *p10 = new TGeoMedium("p10", 1, new TGeoMaterial("p10"));
+  auto rMinTPC = fPar -> GetParDouble("LHTpc/rMinTPC");
+  auto rMaxTPC = fPar -> GetParDouble("LHTpc/rMaxTPC");
+  auto tpcLength = fPar -> GetParDouble("LHTpc/tpcLength");
+  auto zOffset = fPar -> GetParDouble("LHTpc/zOffset");
+
+  TGeoMedium *medium = new TGeoMedium("medium", 1, new TGeoMaterial("medium"));
 
   auto top = CreateGeoTop();
 
   TGeoVolume *tpc = new TGeoVolumeAssembly("TPC");
   TGeoTranslation *offTPC = new TGeoTranslation("TPC offset",0,0,zOffset);
 
-  TGeoVolume *gas = fGeoManager -> MakeTube("gas",p10,rMinTPC,rMaxTPC,tpcLength/2);
+  TGeoVolume *gas = fGeoManager -> MakeTube("gas",medium,rMinTPC,rMaxTPC,tpcLength/2);
   gas -> SetVisibility(true);
   gas -> SetLineColor(kBlue-10);
   gas -> SetTransparency(90);
@@ -75,11 +78,18 @@ bool LHTpc::BuildDetectorPlane()
 {
   LKPadPlane *padplane = nullptr;
 
-  padplane = new LHPadPlaneRPad();
+  if (fPar->CheckPar("PadPlaneType"))
+  {
+         if (fPar->GetParString("LHTpc/PadPlaneType") == "LHPadPlaneRCut") padplane = new LHPadPlaneRCut();
+         if (fPar->GetParString("LHTpc/PadPlaneType") == "LHPadPlaneYCut") padplane = new LHPadPlaneYCut();
+    else if (fPar->GetParString("LHTpc/PadPlaneType") == "LHPadPlaneFan")  padplane = new LHPadPlaneFan();
+  }
+  else
+    padplane = new LHPadPlaneYCut();
 
   padplane -> AddParameterContainer(fPar);
   padplane -> SetPlaneID(0);
-  padplane -> SetPlaneK(fPar -> GetParDouble("tpcPadPlaneK0"));
+  padplane -> SetPlaneK(fPar -> GetParDouble("LHTpc/tpcPadPlaneK0"));
   padplane -> SetAxis(LKVector3::kX, LKVector3::kY);
   padplane -> Init();
 

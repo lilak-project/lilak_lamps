@@ -1,13 +1,13 @@
 << input/lamps_tpc.mac
 
-G4MacroFile input/geant4_run.mac
-G4InputFile input/qmd_10.gen
+#LKG4Manager/G4VisFile
+LKG4Manager/G4MacroFile input/geant4_run.mac
+LKG4Manager/G4InputFile input/qmd_10.gen
+LKG4Manager/G4OutputFile data/qmd_test.mc.root
 
-G4OutputFile data/qmd_test.mc.root
+LKG4Manager/SensitiveDetectors TPC
 
-SensitiveDetectors TPC
-
-MCSetEdepSumTree false
-MCStepPersistency true
-MCSecondaryPersistency true
-MCTrackVertexPersistency true
+LKG4Manager/MCSetEdepSumTree false
+LKG4Manager/MCStepPersistency true
+LKG4Manager/MCSecondaryPersistency true
+LKG4Manager/MCTrackVertexPersistency true

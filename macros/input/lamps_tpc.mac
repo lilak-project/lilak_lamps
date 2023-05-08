@@ -1,56 +1,72 @@
-worlddX 1500
-worlddY 1500
-worlddZ 4200
+LHTpc/rMinTPC       100.
+LHTpc/rMaxTPC       500.
+LHTpc/tpcLength     1200.
+LHTpc/zOffset       300.
+LHTpc/tpcPadPlaneK0 900
+LHTpc/PadPlaneType  LHPadPlaneYCut
 
-tpcBFieldAxis   z  # axis of B-field direction
-tpcEFieldAxis   z  # axis of E-field direction
-tpcDriftAxis    z  # direction of electric field
-tbStart         0
-nTbs            512
-#nTbs           800
-tbTime          40   # [ns]
+*LHPadPlaneRCut/rMinTPC      {LHTpc/rMinTPC}
+*LHPadPlaneRCut/rMaxTPC      {LHTpc/rMaxTPC}
+*LHPadPlaneRCut/PadGap       0.5     # gap between pads [mm]
+*LHPadPlaneRCut/PadWidth     3.
+*LHPadPlaneRCut/PadHeight    10.
+*LHPadPlaneRCut/YPPMin       92.64   # bottom y [mm] of most inner pad
+*LHPadPlaneRCut/YPPMax       499.75  # maximum y of the most outer pad. The pad height will be cut if height is larger than this value
+*LHPadPlaneRCut/WPPBottom    76.2    # width of the pad plane for the most inner pad plane layer
+*LHPadPlaneRCut/PadAreaLL    4       # pad will be removed if pad area is less than this value [mm^2]
+*LHPadPlaneRCut/rmCuttedPad  false   # if rmCutted Pad is true, (geometrically) cutted pads will be removed wether or not they come in to the pad area limit.
 
-### Tpc
-worldSize 1000.
-rMinTPC   100.
-rMaxTPC   500.
-tpcLength 1200.
-zOffset   300.
-bfieldx   0.     # Tesla
-bfieldy   0.     # Tesla
-bfieldz   0.5    # Tesla
-detMatName p20
+*LHPadPlaneYCut/rMinTPC      100
+*LHPadPlaneYCut/rMaxTPC      510
+*LHPadPlaneYCut/padGap       0.5
+*LHPadPlaneYCut/rTopCut      506
+*LHPadPlaneYCut/padWidth     3
+*LHPadPlaneYCut/padHeight    10
+*LHPadPlaneYCut/radiusLayer0 110
+*LHPadPlaneYCut/numLayers    42
 
-### PSA
-ADCThreshold 30
+*LHPadPlaneFan/rMinTPC       100
+*LHPadPlaneFan/rMaxTPC       510
+*LHPadPlaneFan/nLayerDiv     2
+*LHPadPlaneFan/innerTrackerDivisionIndex 0  # set layers in this division index to be used for pre track finding before all layer are used.
+*LHPadPlaneFan/padInfo/0     3  10  14  # arc length, radius, number of layers
+*LHPadPlaneFan/padInfo/1     4  14  14  # arc length, radius, number of layers
+
+LHDetectorConstruction/worlddX      1500
+LHDetectorConstruction/worlddY      1500
+LHDetectorConstruction/worlddZ      4200
+LHDetectorConstruction/rMinTPC      {LHTpc/rMinTPC}
+LHDetectorConstruction/rMaxTPC      {LHTpc/rMaxTPC}
+LHDetectorConstruction/tpcLength    {LHTpc/tpcLength}
+LHDetectorConstruction/zOffset      {LHTpc/zOffset}
+LHDetectorConstruction/bfieldx      0.     # Tesla
+LHDetectorConstruction/bfieldy      0.     # Tesla
+LHDetectorConstruction/bfieldz      0.5    # Tesla
+LHDetectorConstruction/detMatName   p20
+
+LHHelixTrackFindingTask/tpcBFieldAxis       z  # axis of B-field direction
+LHHelixTrackFindingTask/LHTF_defaultScale   2.5 # 2.5
+LHHelixTrackFindingTask/LHTF_trackWCutLL    5.  # 4.
+LHHelixTrackFindingTask/LHTF_trackWCutHL    15. # 10.
+LHHelixTrackFindingTask/LHTF_trackHCutLL    5.  # 2.
+LHHelixTrackFindingTask/LHTF_trackHCutHL    15. # 4.
+
+#tpcEFieldAxis   z  # axis of E-field direction
+#tpcDriftAxis    z  # direction of electric field
+#tbStart         0
+#nTbs            512
+#tbTime          40   # [ns]
+#ADCThreshold 30
 
 ### KBDriftElectron
-#eVToADC        0.00249595
-#eVToADC        0.00004
-eVToADC         0.0002
-dynamicRange    5000
+#eVToADC         0.0002
+#dynamicRange    5000
 
 #selectMCTrack 1 # comment out to digitize single track
 
 ### For one side pad plane
-tpcCathodePlaneK    -300.
-tpcNPadPlanes       1
-tpcPadPlaneK0       900.
+#tpcCathodePlaneK    -300.
+#tpcNPadPlanes       1
+#tpcPadPlaneK0       900.
 
-### LHTrackFinder parameters
-LHTF_defaultScale 2.5 # 2.5
-LHTF_trackWCutLL  5.  # 4.
-LHTF_trackWCutHL  15. # 10.
-LHTF_trackHCutLL  5.  # 2.
-LHTF_trackHCutHL  15. # 4.
-
-PadPlaneType LHPadPlane3
-#PadPlaneType    LHPadPlaneRPad
-PadGap          0.5
-PadWidth        3.
-PadHeight       10.
-YPPMin          92.64
-YPPMax          499.75
-WPPBottom       76.2
-PadAreaLL       4
-removeCuttedPad false
+#PadPlaneType LHPadPlane3
