@@ -1,0 +1,13 @@
+<< input/lamps_tpc.mac
+
+G4MacroFile input/geant4_run.mac
+G4InputFile input/qmd_10.gen
+
+G4OutputFile data/qmd_test.mc.root
+
+SensitiveDetectors TPC
+
+MCSetEdepSumTree false
+MCStepPersistency true
+MCSecondaryPersistency true
+MCTrackVertexPersistency true
