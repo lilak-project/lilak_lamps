@@ -22,7 +22,7 @@ class LHDriftElectronTask : public LKTask
   private:
     TClonesArray* fMCStepArray;
     TClonesArray* fPadArray;
-    bool fPersistency = true;
+    bool fPersistencyPad = true;
 
     LHTpc *fTpc = nullptr;
     LKPadPlane *fPadPlane = nullptr;
@@ -42,7 +42,8 @@ class LHDriftElectronTask : public LKTask
     Int_t fNTbs;
     Double_t fTbTime;
 
-    Double_t fSelectedTrackID = -1;
+    /// [debugging tool] if fSelectAndDebugTrackID is set, only the selected track will be digitized through the task
+    Double_t fSelectAndDebugTrackID = -1;
 
   ClassDef(LHDriftElectronTask, 1)
 };

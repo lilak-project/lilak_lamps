@@ -6,8 +6,8 @@ using namespace std;
 
 ClassImp(LHElectronicsTask)
 
-LHElectronicsTask::LHElectronicsTask(Bool_t usePointChargeMC)
-:LKTask("LHElectronicsTask",""), fUsePointChargeMC(usePointChargeMC)
+LHElectronicsTask::LHElectronicsTask()
+:LKTask("LHElectronicsTask","")
 {
 }
 
@@ -19,9 +19,9 @@ bool LHElectronicsTask::Init()
   LHTpc *det = (LHTpc *) (run -> GetDetectorSystem() -> GetTpc());
 
   fNPlanes = det -> GetNumPlanes();
-  fNTbs = par -> GetParInt("nTbs");
-  feVToADC = par -> GetParDouble("eVToADC");
-  fDynamicRange = par -> GetParDouble("dynamicRange");
+  fNTbs = par -> GetParInt("LHElectronicsTask/numTbs");
+  feVToADC = par -> GetParDouble("LHElectronicsTask/eVToADC");
+  fDynamicRange = par -> GetParDouble("LHElectronicsTask/dynamicRange");
 
   fPadArray = (TClonesArray *) run -> GetBranch("Pad");
 

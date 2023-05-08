@@ -1,3 +1,4 @@
+#include "LKLogger.hpp"
 #include "LKG4RunManager.hpp"
 #include "LKParameterContainer.hpp"
 #include "LKPrimaryGeneratorAction.hpp"
@@ -11,6 +12,8 @@
 
 int main(int argc, char** argv)
 {
+    lk_logger("data/log");
+
     auto runManager = new LKG4RunManager();
 
     G4VModularPhysicsList* physicsList = new QGSP_BERT;

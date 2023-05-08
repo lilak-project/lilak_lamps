@@ -51,22 +51,19 @@ LHHelixTrackFindingTask/LHTF_trackWCutHL    15. # 10.
 LHHelixTrackFindingTask/LHTF_trackHCutLL    5.  # 2.
 LHHelixTrackFindingTask/LHTF_trackHCutHL    15. # 4.
 
-#tpcEFieldAxis   z  # axis of E-field direction
-#tpcDriftAxis    z  # direction of electric field
-#tbStart         0
-#nTbs            512
-#tbTime          40   # [ns]
-#ADCThreshold 30
+LHDriftElectronTask/PadPersistency      true
 
-### KBDriftElectron
-#eVToADC         0.0002
-#dynamicRange    5000
+LHDriftElectronTask/numTbs              512  # ns
+LHDriftElectronTask/tbTime              40  # ns
+LHDriftElectronTask/gasDriftVelocity    0.0542411  # [mm/ns]
+LHDriftElectronTask/gasCoefLongDiff     0.115461
+LHDriftElectronTask/gasCoefTranDiff     0.0662528
+LHDriftElectronTask/gasEIonize          2.62e-05   # ionization energy in gas [MeV]
+LHDriftElectronTask/nElInCluster        10000  # number of electrons in electron cluster (related to speed of LADriftElectronTask)
+LHDriftElectronTask/tpcGEMDataFile      input/tripleGEM.root
+LHDriftElectronTask/selectMCTrack       0   # [debugging tool] if fSelectAndDebugTrackID is set, only the selected track will be digitized through the task
 
-#selectMCTrack 1 # comment out to digitize single track
-
-### For one side pad plane
-#tpcCathodePlaneK    -300.
-#tpcNPadPlanes       1
-#tpcPadPlaneK0       900.
-
-#PadPlaneType LHPadPlane3
+LHElectronicsTask/numTbs                {LHDriftElectronTask/numTbs}
+LHElectronicsTask/tbTime                {LHDriftElectronTask/tbTime}
+LHElectronicsTask/eVToADC               0.0002
+LHElectronicsTask/dynamicRange          1000000

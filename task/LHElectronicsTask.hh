@@ -12,8 +12,12 @@
 class LHElectronicsTask : public LKTask
 { 
   public:
-    LHElectronicsTask(Bool_t usePointChargeMC = false);
+    LHElectronicsTask();
     virtual ~LHElectronicsTask() {}
+
+    /// If pulse shaping should be done for each mc points use SetUsePointChargeMC(true)
+    /// By default, this values is false, and pulse shaping is done in group of charge in one time bucket
+    void SetUsePointChargeMC(bool usePointChargeMC) { fUsePointChargeMC = usePointChargeMC; }
 
     bool Init();
     void Exec(Option_t*);
